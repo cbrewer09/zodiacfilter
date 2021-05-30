@@ -1,0 +1,231 @@
+from simpleimage import SimpleImage
+
+INTENSITY = 1.05
+
+
+def main():
+    """
+    This program will find out a user's zodiac sign,
+    Chinese zodiac animal, and elemental sign. It will
+    then use that information to filter an image with
+    custom colors depending on the user's signs. It will
+    show a before and after of the two images.
+    """
+
+    print_intro()
+    # defines inital before image
+    image = SimpleImage("wavy.jpeg")
+    # defines the filtered image and initiates the filtering
+    filtered_image = filter_image(image)
+    image.show()  # shows before
+    filtered_image.show()  # shows after
+
+
+# explains this program to the user
+def print_intro():
+    print("Welcome to the Zodiac Filter!")
+    print("This program calculates your sun zodiac sign, your Chinese Lunar Zodiac sign, and your elemental sign.")
+    print("Then, an image will be custom-filtered based on your three signs.")
+    print("First, we will ask for your birthday.")
+    print("Next, we will show you the original image and your custom-filtered image.")
+    print("Enjoy!")
+
+
+# the process that filters the image
+def filter_image(pic):
+    # assigns the result of find_sun_sign to variable sun_sign
+    sun_sign = find_sun_sign(month(), day())
+    # assigns the result of find_zodiac_animal to variable zodiac_animal
+    zodiac_animal = find_zodiac_animal(year())
+    # assigns the elemental sign based on the sun sign
+    elemental_sign = find_elemental_sign(sun_sign)
+    # tells the user their signs
+    print("Your sun sign is " + str(sun_sign))
+    print("Your Chinese Zodiac sign is " + str(zodiac_animal))
+    print("Your elemental sign is " + str(elemental_sign))
+    pic = SimpleImage("wavy.jpeg")
+    for pixel in pic:
+        # defines an average to be used as a threshold for changing pixels
+        average = ((pixel.red + pixel.green + pixel.blue) / 3) * INTENSITY
+        # uses the sun sign to assign a custom red value to all pixels
+        if pixel.red >= average:
+            if sun_sign == "Aries ♈":
+                pixel.red = 128
+            if sun_sign == "Taurus ♉":
+                pixel.red = 64
+            if sun_sign == "Gemini ♊":
+                pixel.red = 125
+            if sun_sign == "Cancer ♋":
+                pixel.red = 100
+            if sun_sign == "Leo ♌":
+                pixel.red = 145
+            if sun_sign == "Virgo ♍":
+                pixel.red = 176
+            if sun_sign == "Libra ♎":
+                pixel.red = 120
+            if sun_sign == "Scorpio ♏":
+                pixel.red = 36
+            if sun_sign == "Sagittarius ♐":
+                pixel.red = 192
+            if sun_sign == "Capricorn ♑":
+                pixel.red = 102
+            if sun_sign == "Aquarius ♒":
+                pixel.red = 128
+            if sun_sign == "Pisces ♓":
+                pixel.red = 161
+        # uses the Chinese zodiac animal to assign a unique green value to all pixels
+        if pixel.green >= average:
+            if zodiac_animal == "Monkey":
+                pixel.green = 99
+            if zodiac_animal == "Rooster":
+                pixel.green = 194
+            if zodiac_animal == "Dog":
+                pixel.green = 102
+            if zodiac_animal == "Pig":
+                pixel.green = 123
+            if zodiac_animal == "Rat":
+                pixel.green = 210
+            if zodiac_animal == "Ox":
+                pixel.green = 155
+            if zodiac_animal == "Tiger":
+                pixel.green = 199
+            if zodiac_animal == "Rabbit":
+                pixel.green = 187
+            if zodiac_animal == "Dragon":
+                pixel.green = 111
+            if zodiac_animal == "Snake":
+                pixel.green = 195
+            if zodiac_animal == "Horse":
+                pixel.green = 146
+            if zodiac_animal == "Sheep":
+                pixel.green = 17
+        # uses elemental sign to assign blue value of all pixels
+        if pixel.blue >= average:
+            if elemental_sign == "Earth":
+                pixel.blue = 9
+            if elemental_sign == "Fire":
+                pixel.blue = 15
+            if elemental_sign == "Air":
+                pixel.blue = 128
+            if elemental_sign == "Water":
+                pixel.blue = 230
+    # returns after image to main functions
+    return pic
+
+
+# takes users month and day of birth and finds their sun sign.
+# returns the sun sign to the main function.
+def find_sun_sign(m, d):
+    if m == 3 and d >= 21 or m == 4 and d <= 19:  # Aries date range is 3.21-4.19
+        sun = "Aries ♈"
+        return sun
+    if m == 4 and d >= 20 or m == 5 and d <= 20:  # Taurus date range is 4.20-5.20
+        sun = "Taurus ♉"
+        return sun
+    if m == 5 and d >= 21 or m == 6 and d <= 20:  # Gemini date range is 5.21-6.20
+        sun = "Gemini ♊"
+        return sun
+    if m == 6 and d >= 21 or m == 7 and d <= 22:  # Cancer date range is 6.21-7.22
+        sun = "Cancer ♋"
+        return sun
+    if m == 7 and d >= 23 or m == 8 and d <= 22:  # Leo date range is 7.23-8.22
+        sun = "Leo ♌"
+        return sun
+    if m == 8 and d >= 23 or m == 9 and d <= 22:  # Virgo date range is 8.23-9.22
+        sun = "Virgo ♍"
+        return sun
+    if m == 9 and d >= 23 or m == 10 and d <= 22:  # Libra date range is 9.23-10.22
+        sun = "Libra ♎"
+        return sun
+    if m == 10 and d >= 23 or m == 11 and d <= 22:  # Scorpio date range is 10.23-11.22
+        sun = "Scorpio ♏"
+        return sun
+    if m == 11 and d >= 23 or m == 12 and d <= 21:  # Sagittarius date range is 11.23-12.21
+        sun = "Sagittarius ♐"
+        return sun
+    if m == 12 and d >= 22 or m == 1 and d <= 19:  # Capricorn date range is 12.22-1.19
+        sun = "Capricorn ♑"
+        return sun
+    if m == 1 and d >= 20 or m == 2 and d <= 18:  # Aquarius date range is 1.20-2.18
+        sun = "Aquarius ♒"
+        return sun
+    if m == 2 and d <= 19 or m == 3 and d <= 20:  # Pisces date range is 2.19-3.20
+        sun = "Pisces ♓"
+        return sun
+
+
+def find_zodiac_animal(y):
+    if y % 12 == 0:
+        animal = "Monkey"
+        return animal
+    if y % 12 == 1:
+        animal = "Rooster"
+        return animal
+    if y % 12 == 2:
+        animal = "Dog"
+        return animal
+    if y % 12 == 3:
+        animal = "Pig"
+        return animal
+    if y % 12 == 4:
+        animal = "Rat"
+        return animal
+    if y % 12 == 5:
+        animal = "Ox"
+        return animal
+    if y % 12 == 6:
+        animal = "Tiger"
+        return animal
+    if y % 12 == 7:
+        animal = "Rabbit"
+        return animal
+    if y % 12 == 8:
+        animal = "Dragon"
+        return animal
+    if y % 12 == 9:
+        animal = "Snake"
+        return animal
+    if y % 12 == 10:
+        animal = "Horse"
+        return animal
+    if y % 12 == 11:
+        animal = "Sheep"
+        return animal
+
+
+# uses user's sun sign to classify them as earth, air, fire, or water
+def find_elemental_sign(sun_sign):
+    if sun_sign == "Aries ♈" or sun_sign == "Leo ♌" or sun_sign == "Sagittarius ♐":
+        element = "Fire"
+        return element
+    if sun_sign == "Taurus ♉" or sun_sign == "Virgo ♍" or sun_sign == "Capricorn ♑":
+        element = "Earth"
+        return element
+    if sun_sign == "Gemini ♊" or sun_sign == "Libra ♎" or sun_sign == "Aquarius ♒":
+        element = "Air"
+        return element
+    if sun_sign == "Cancer ♋" or sun_sign == "Scorpio ♏" or sun_sign == "Pisces ♓":
+        element = "Water"
+        return element
+
+
+# asks user for their numerical day of birth and returns it
+def day():
+    day = int(input("What number day were your born on?: "))
+    return day
+
+
+# asks user for their numerical month of birth and returns it
+def month():
+    month = int(input("What number month were you born in?: "))
+    return month
+
+
+# asks user for their year of birth and returns it
+def year():
+    year = int(input("What four-digit year were you born in?: "))
+    return year
+
+
+if __name__ == "__main__":
+    main()
